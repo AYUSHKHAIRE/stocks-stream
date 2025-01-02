@@ -1,0 +1,54 @@
+# install kafka and set up
+
+install kafka in your root 
+we assume your structure is like 
+Home/[USERNAME]/kafka/bin
+
+make it available on global
+nano ~/.bashrc
+# Kafka Environment Variables
+export KAFKA_HOME=/home/ayushkhaire/kafka
+export PATH=$KAFKA_HOME/bin:$PATH
+# Kafka Aliases : pull in shell
+alias kafka-topics="bash $KAFKA_HOME/bin/kafka-topics.sh"
+alias kafka-console-producer="bash $KAFKA_HOME/bin/kafka-console-producer.sh"
+alias kafka-console-consumer="bash $KAFKA_HOME/bin/kafka-console-consumer.sh"
+alias kafka-consumer-groups="bash $KAFKA_HOME/bin/kafka-consumer-groups.sh"
+alias kafka-configs="bash $KAFKA_HOME/bin/kafka-configs.sh"
+alias kafka-server-start="bash $KAFKA_HOME/bin/kafka-server-start.sh"
+alias kafka-server-stop="bash $KAFKA_HOME/bin/kafka-server-stop.sh"
+alias kafka-run-class="bash $KAFKA_HOME/bin/kafka-run-class.sh"
+alias zookeeper-server-start="bash $KAFKA_HOME/bin/zookeeper-server-start.sh"
+alias zookeeper-server-stop="bash $KAFKA_HOME/bin/zookeeper-server-stop.sh"
+alias kafka-producer-perf-test="bash $KAFKA_HOME/bin/kafka-producer-perf-test.sh"
+alias kafka-consumer-perf-test="bash $KAFKA_HOME/bin/kafka-consumer-perf-test.sh"
+
+# now , run commands
+zookeeper-server-start $KAFKA_HOME/config/zookeeper.properties
+kafka-server-start $KAFKA_HOpr  ME/config/server.properties
+kafka-topics --bootstrap-server localhost:9092 --create --topic global-events --partitions 1 --replication-factor 1
+kafka-topics --bootstrap-server localhost:9092 --list
+
+# project commands for creating/deleting topics
+kafka-topics --bootstrap-server localhost:9092 --create --topic order-events
+kafka-topics --bootstrap-server localhost:9092 --create --topic listen-orders
+kafka-topics --bootstrap-server localhost:9092 --delete --topic order-events
+
+to run python activate python env 
+go to the env dir
+run >>>>>
+source kafkaenv/bin/activate
+run consumer >>>>>
+python3 consume.py 
+run producer >>>>>
+python3 produce.py
+
+OR 
+
+go to directory 
+and execute shell script 
+
+[ ONLY ONE RRUN ]
+chmod +x run_kafka.sh
+./run_kafka.sh
+
