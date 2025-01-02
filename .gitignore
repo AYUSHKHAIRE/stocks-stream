@@ -1,2 +1,7 @@
+# global
 /cmds.txt
 /.env
+
+# kafka
+/kafka-moniter/kafkaenv
+kafka-moniter/__pycache__
