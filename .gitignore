@@ -4,4 +4,9 @@
 
 # kafka
 /kafka-moniter/kafkaenv
-kafka-moniter/__pycache__
+/kafka-moniter/__pycache__
+
+# data sourcer
+/data_sourcing/source
+/data_sourcing/sourceenv
+/data_sourcing/__pycache__
