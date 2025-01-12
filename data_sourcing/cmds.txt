@@ -1,0 +1,3 @@
+source sourceenv/bin/activate 
+chmod +x check_mysql.sh
+./check_mysql.sh
