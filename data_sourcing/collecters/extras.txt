@@ -1,3 +1,5 @@
 kaggle notebook link
+https://www.kaggle.com/code/ayushkhaire/real-time-data-update
 
-https://www.kaggle.com/code/ayushkhaire/real-time-data-update?scriptVersionId=217446741
+dataset link 
+https://www.kaggle.com/datasets/ayushkhaire/real-time-stocks-data
