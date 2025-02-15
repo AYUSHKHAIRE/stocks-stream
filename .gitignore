@@ -10,3 +10,6 @@
 /data_sourcing/source
 /data_sourcing/sourceenv
 /data_sourcing/__pycache__
+
+# spark
+/stream-processing/sparkenv
