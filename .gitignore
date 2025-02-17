@@ -13,3 +13,7 @@
 
 # spark
 /stream-processing/sparkenv
+
+# stocksly server
+/stocksly/mpenv
+/stocksly/db.sqlite3
