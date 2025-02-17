@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stocksly</title>
+
+    <!-- Dark Theme CSS -->
+    <style>
+      /* Basic styling */
+      body {
+        background-color: #121212;
+        color: #e0e0e0;
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        line-height: 1.6;
+      }
+
+      h1,
+      h2,
+      p {
+        color: #e0e0e0;
+      }
+
+      h1 {
+        font-size: 2em;
+        color: #bb86fc;
+      }
+
+      h2 {
+        font-size: 1.5em;
+        color: #03dac6;
+      }
+
+      a {
+        color: #03dac6;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* Code blocks */
+      .code-container {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+      }
+
+      code {
+        display: block;
+        background-color: #1e1e1e;
+        padding: 10px;
+        border-radius: 5px;
+        color: #c5c5c5;
+        font-size: 0.95em;
+        overflow-wrap: break-word;
+        white-space: pre-wrap;
+      }
+
+      /* Copy button styling */
+      .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: #03dac6;
+        border: none;
+        color: #121212;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      .copy-btn:hover {
+        background-color: #bb86fc;
+      }
+
+      /* Copy notification styling */
+      .copy-notification {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #03dac6;
+        color: #121212;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: opacity 0.3s ease;
+      }
+
+      .copy-notification.show {
+        display: block;
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <hr>
+    <div style="display: flex;justify-content: space-between;">
+      <div>
+      created by <a href="https://www.linkedin.com/in/ayushkhaire" target="_blank" >Ayush Khaire</a> . 
+    </div>
+    <div>
+      public repository link <a href="https://github.com/AYUSHKHAIRE/stocksly/" target="_blank" > AYUSHKHAIRE/stocksly </a>
+    </div>
+    </div>
+    <div style="display: flex;justify-content: center;" >
+      Get data in&nbsp;<a  target="_blank" href="https://www.kaggle.com/" style="color: rgb(92, 217, 255);" >Kaggle</a>&nbsp;Dataset&nbsp;:&nbsp;<a target="_blank"  href="https://www.kaggle.com/datasets/ayushkhaire/stock-past-one-year-data">Daily data</a> &nbsp; and &nbsp; <a target="_blank" href="https://www.kaggle.com/datasets/ayushkhaire/real-time-stocks-data/">Real time data</a>
+    </div>
+    <hr>
+    <h1>Welcome to Stocksly!</h1>
+    <h2>Retrieve stock data in JSON format easily.</h2>
+
+    <div class="section">
+      <h1>Documentation Link</h1>
+      <a class="btn" href="http://{{ hostname }}/" target="_blank">Visit Documentation</a>
+    </div>
+
+    <div class="section">
+      <h1>Available Stock Names</h1>
+      <a class="btn" href="http://{{ hostname }}/stocks/get_available_stocks/" target="_blank">View Available Stocks</a>
+    </div>
+
+    <div class="section">
+      <h1>Get Daily Data for Any Available Stock</h1>
+      <a class="btn" href="http://{{ hostname }}/stocks/get_stock_daily_data/{{ stock }}/" target="_blank">{{ stock }} Stock Daily Data</a>
+      <p>Data for the last 30 days is provided by default. You can specify start and end parameters for a custom range.</p>
+
+      <div class="code-container">
+        <a href="http://{{ hostname }}/stocks/get_stock_daily_data/{{ stock }}/?start={{ starttime }}&end={{ endtime }}">View {{ stock }} data from {{ starttime }} and {{ endtime }}</a>
+        <code>{{ hostname }}/stocks/get_stock_daily_data/{{ stock }}/?start={{ starttime }}&end={{ endtime }}</code>
+        <button class="copy-btn" onclick="copyToClipboard('https://{{ hostname }}/stocks/get_stock_daily_data/{{ stock }}/?start={{ starttime }}&end={{ endtime }}')">
+          Copy
+        </button>
+      </div>
+
+      <p>Display chart data if desired!</p>
+
+      <div class="code-container">
+        <a href="http://{{ hostname }}/stocks/get_stock_daily_data_chart/{{ stock }}/?start={{ starttime }}&end={{ endtime }}">View {{ stock }} chart from {{ starttime }} and {{ endtime }}</a>
+        <code>{{ hostname }}/stocks/get_stock_daily_data_chart/{{ stock }}/?start={{ starttime }}&end={{ endtime }}</code>
+        <button class="copy-btn" onclick="copyToClipboard('https://{{ hostname }}/stocks/get_stock_daily_data_chart/{{ stock }}/?start={{ starttime }}&end={{ endtime }}')">
+          Copy
+        </button>
+      </div>
+
+      <iframe src="http://{{ hostname }}/stocks/get_stock_daily_data_chart/{{ stock }}/?start={{ starttime }}&end={{ endtime }}" frameborder="0" style="width: 90vw; height: 60vh;"></iframe>
+    </div>
+
+    <div class="section">
+      <h1>Get Per Minute Data for Any Available Stock</h1>
+      <div class="code-container">
+        <a href="http://{{ hostname }}/stocks/get_stock_per_minute_data/{{ stock }}/?start={{ startperminutetime }}&end={{ endperminutetime }}">View {{ stock }} data from {{ startperminutetime }} and {{ endperminutetime }}</a>
+        <code>http://{{ hostname }}/stocks/get_stock_per_minute_data/{{ stock }}/?start={{ startperminutetime }}&end={{ endperminutetime }}</code>
+        <button class="copy-btn" onclick="copyToClipboard('https://{{ hostname }}/stocks/get_stock_per_minute_data/{{ stock }}/?start={{ startperminutetime }}&end={{ endperminutetime }}')">
+          Copy
+        </button>
+      </div>
+
+      <p>Display chart data if desired!</p>
+
+      <div class="code-container">
+        <a href="http://{{ hostname }}/stocks/get_stock_per_minute_data_chart/{{ stock }}/?start={{ startperminutetime }}&end={{ endperminutetime }}">View {{ stock }} chart from {{ startperminutetime }} and {{ endperminutetime }}</a>
+        <code>http://{{ hostname }}/stocks/get_stock_per_minute_data_chart/{{ stock }}/?start={{ startperminutetime }}&end={{ endperminutetime }}</code>
+        <button class="copy-btn" onclick="copyToClipboard('https://{{ hostname }}/stocks/get_stock_per_minute_data_chart/{{ stock }}/?start={{ startperminutetime }}&end={{ endperminutetime }}')">
+          Copy
+        </button>
+      </div>
+
+      <iframe src="http://{{ hostname }}/stocks/get_stock_per_minute_data_chart/{{ stock }}/?start={{ startperminutetime }}&end={{ endperminutetime }}" frameborder="0" style="width: 90vw; height: 60vh;"></iframe>
+    </div>
+
+    <!-- Notification element for successful copy action -->
+    <div id="copy-notification" class="copy-notification">
+      Copied to clipboard!
+    </div>
+
+    <script>
+      // JavaScript function to copy code to clipboard and show notification
+      function copyToClipboard(text) {
+        navigator.clipboard
+          .writeText(text)
+          .then(() => {
+            showCopyNotification();
+          })
+          .catch((err) => {
+            console.error("Failed to copy: ", err);
+          });
+      }
+
+      // Show the copy notification
+      function showCopyNotification() {
+        const notification = document.getElementById("copy-notification");
+        notification.classList.add("show");
+
+        // Hide notification after 2 seconds
+        setTimeout(() => {
+          notification.classList.remove("show");
+        }, 2000);
+      }
+    </script>
+  </body>
+</html>
