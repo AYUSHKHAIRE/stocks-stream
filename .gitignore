@@ -12,7 +12,8 @@
 /data_sourcing/__pycache__
 
 # spark
-/stream-processing/sparkenv
+/batch-processing/sparkenv
+/batch-processing/output
 
 # stocksly server
 /stocksly/mpenv
