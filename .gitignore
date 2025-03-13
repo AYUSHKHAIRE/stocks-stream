@@ -15,7 +15,8 @@
 /batch-processing/sparkenv
 /batch-processing/output
 /stream-processing/streamenv
-
+/stream-processing/checkpoints
+/stream-processing/output
 # stocksly server
 /stocksly/mpenv
 /stocksly/db.sqlite3
