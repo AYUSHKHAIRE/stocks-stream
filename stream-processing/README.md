@@ -1,10 +1,11 @@
 # A real time data processing pipeline 
 
-[ files you should avoid ]
 The components of this code are :
+[ files you should avoid ]\
 * socket server : broadcast the received data to all clients .
 * logger config : logging configuration
 * socket client  : send data to the server and receive data from the server .
+
 [ files you can edit ]
 * pre processing : process the data before streaming .
 * process stream : play with the incoming stream data .
