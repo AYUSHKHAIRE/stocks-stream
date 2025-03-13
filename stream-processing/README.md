@@ -1,7 +1,7 @@
 # A real time data processing pipeline 
 
-The components of this code are :
-[ files you should avoid ]\
+The components of this code are :\
+[ files you should avoid ]
 * socket server : broadcast the received data to all clients .
 * logger config : logging configuration
 * socket client  : send data to the server and receive data from the server .
