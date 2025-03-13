@@ -1,11 +1,11 @@
 import pandas as pd
-import os 
+import os
 from tqdm import tqdm
 from datetime import datetime
 
 stocks_files = os.listdir('../data_sourcing/source/real-time')
 
-for stock in tqdm(stocks_files):
+for stock in tqdm(stocks_files):  # Start from index 179
     df = pd.read_csv(f'../data_sourcing/source/real-time/{stock}')
     
     df['unix_timestamp'] = df['timestamp'].apply(
