@@ -35,5 +35,8 @@ python socket_server.py
 python create-stream.py
 ```
 ```bash
+python spark_stream_manage.py
+```
+```bash
 python process-stream.py
 ```
