@@ -47,13 +47,21 @@ aggregated_stream = parsed_stream.groupBy("stockname").agg(
 sorted_stream = aggregated_stream.orderBy(col("price_diff").desc())
 
 # Start the query
-query = sorted_stream.writeStream \
-    .outputMode("complete") \
-    .format("console") \
-    .queryName("stock_analysis") \
-    .trigger(processingTime="1 second") \
-    .option("checkpointLocation", "checkpoints/stock_analysis/") \
-    .start()
+# query = sorted_stream.writeStream \
+#     .outputMode("complete") \
+#     .format("console") \
+#     .queryName("stock_analysis") \
+#     .trigger(processingTime="1 second") \
+#     .option("checkpointLocation", "checkpoints/stock_analysis/") \
+#     .start()
 
+# track all changes on parameters upto now .
+query_1 = sorted_stream.writeStream \
+    .outputMode("complete") \
+    .format("memory") \
+    .queryName("stock_meta_table") \
+    .trigger(processingTime="5 seconds") \
+    .start()
+    
 # Wait for query termination
-query.awaitTermination()
+query_1.awaitTermination()
