@@ -29,6 +29,10 @@ pip install -r requirements.txt
 python pre-process.py
 ```
 ```bash
+python process-stream.py
+```
+--- 
+```bash
 python socket_server.py
 ```
 ```bash
@@ -36,7 +40,4 @@ python create-stream.py
 ```
 ```bash
 python spark_stream_manage.py
-```
-```bash
-python process-stream.py
 ```
