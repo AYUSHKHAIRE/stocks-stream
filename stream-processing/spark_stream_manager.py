@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, from_json, max, min
+from pyspark.sql.functions import col, from_json, max, min,current_timestamp, unix_timestamp
 from pyspark.sql.types import StructType, StructField, DoubleType, LongType, StringType
 import shutil
 import os
@@ -37,8 +37,15 @@ class SparkStreamManager:
             .option("host", host) \
             .option("port", port) \
             .load()
-        self.stream = raw_stream.select(from_json(col("value"), self.schema).alias("data")).select("data.*")
-    
+
+        # Parse JSON and include system time as unix_timestamp
+        parsed_stream = raw_stream.select(
+            from_json(col("value"), self.schema).alias("data"),
+            unix_timestamp(current_timestamp()).alias("unix_received_time")
+        )
+
+        self.stream = parsed_stream.select("data.*", "unix_received_time")
+        
     def define_query(self, query_name, query_df):
         self.queries[query_name] = query_df
         
@@ -67,6 +74,7 @@ class SparkStreamManager:
 
     def define_stock_aggregation_query(self, query_name="stock_meta_table"):
         aggregated_stream = self.stream.groupBy("stockname").agg(
+            max("unix_received_time").alias("max_unix_received_time"),
             max("open").alias("max_open"),
             max("close").alias("max_close"),
             max("volume").alias("max_volume"),
