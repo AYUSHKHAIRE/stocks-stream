@@ -50,6 +50,7 @@ class SparkStreamManager:
         )
 
         # Set the stream to use the schema    
+    
     def define_query(self, query_name, query_df):
         self.queries[query_name] = query_df
         
