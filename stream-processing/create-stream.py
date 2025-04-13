@@ -38,6 +38,6 @@ for a_t in tqdm(all_times):
         }
         stock_data = json.dumps(stock_dict)
         client.send_message(stock_data)
-        time.sleep(0.5)  # Reduce sleep for better performance
+        time.sleep(0.1)  # Reduce sleep for better performance
 
 client.close()
