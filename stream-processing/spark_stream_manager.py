@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, from_json, max, min,current_timestamp, unix_timestamp
+from pyspark.sql.functions import col, from_json, max, min,from_unixtime , window
 from pyspark.sql.types import StructType, StructField, DoubleType, LongType, StringType
 import shutil
 import os
@@ -40,12 +40,16 @@ class SparkStreamManager:
 
         # Parse JSON and include system time as unix_timestamp
         parsed_stream = raw_stream.select(
-            from_json(col("value"), self.schema).alias("data"),
-            unix_timestamp(current_timestamp()).alias("unix_received_time")
+            from_json(col("value"), self.schema).alias("data")
         )
 
-        self.stream = parsed_stream.select("data.*", "unix_received_time")
-        
+        # Extract fields from the JSON and create a new `event_time` column
+        self.stream = parsed_stream.select(
+            "data.*",
+            from_unixtime(col("data.unix_timestamp")).cast("timestamp").alias("_unix_timestamp"),
+        )
+
+        # Set the stream to use the schema    
     def define_query(self, query_name, query_df):
         self.queries[query_name] = query_df
         
@@ -74,7 +78,8 @@ class SparkStreamManager:
 
     def define_stock_aggregation_query(self, query_name="stock_meta_table"):
         aggregated_stream = self.stream.groupBy("stockname").agg(
-            max("unix_received_time").alias("max_unix_received_time"),
+            max("_unix_timestamp").alias("max_unix_timestamp"),
+            min("_unix_timestamp").alias("min_unix_timestamp"),
             max("open").alias("max_open"),
             max("close").alias("max_close"),
             max("volume").alias("max_volume"),
@@ -88,7 +93,33 @@ class SparkStreamManager:
         self.write_stream_data(query_name)  # Don't block with awaitTermination here
 
     def read_stream_table(self, table_name):
-        return self.spark.sql(f"SELECT * FROM {table_name}")
+        data =  self.spark.sql(f"SELECT * FROM {table_name}")
+        return data.toPandas() if data else None
+    
+    def set_window_query_with_limits(self,window_size , window_slide , window_watermark,window_processing_time):
+        queryname = f"window_query_{window_size}_{window_slide}_{window_watermark}_{window_processing_time}".replace(" ", "_")
+        self.stream \
+        .withWatermark("_unix_timestamp", window_watermark) \
+        .groupBy(
+            window(self.stream._unix_timestamp,window_size, window_slide),
+            self.stream.stockname) \
+        .agg(
+            max("_unix_timestamp").alias("max_unix_timestamp"),
+            min("_unix_timestamp").alias("min_unix_timestamp"),
+            max("open").alias("max_open"),
+            max("close").alias("max_close"),
+            max("volume").alias("max_volume"),
+            min("open").alias("min_open"),
+            min("close").alias("min_close"),
+            min("volume").alias("min_volume"),
+            (max("close") - min("open")).alias("price_diff")
+        ).writeStream \
+        .outputMode("complete") \
+        .format("memory") \
+        .queryName(queryname) \
+        .trigger(processingTime=window_processing_time) \
+        .option("checkpointLocation", f"checkpoints/{queryname}/") \
+        .start() 
 
     def print_active_queries(self):
         print("[ACTIVE STREAMS]:")
